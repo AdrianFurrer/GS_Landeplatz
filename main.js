@@ -3,13 +3,7 @@ import Map from 'ol/Map.js';
 import OSM from 'ol/source/OSM.js';
 import TileWMS from 'ol/source/TileWMS.js';
 import View from 'ol/View.js';
-import GeoJSON from 'ol/format/GeoJSON.js';
-import VectorSource from 'ol/source/Vector.js';
-import XYZ from 'ol/source/XYZ.js';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
-import {bbox as bboxStrategy} from 'ol/loadingstrategy.js';
-import { format } from 'ol/coordinate';
-
 
 // Verschiedenen Maps
 const map_osm = new TileLayer({
@@ -33,6 +27,7 @@ const map_airspaces_wms = new TileLayer({
     serverType: 'geoserver',
     transition: 0,
   }),
+  visible: false
 })
 
 // Set opacity of map_airspaces_wms layer to 0.5 (50% transparency)
@@ -56,13 +51,14 @@ const map = new Map({
 <<<<<<< HEAD
 =======
 // Button zum Umschalten zwischen den Maps erstellen
-const toggleButton = document.createElement('button');
-toggleButton.innerHTML = 'Toggle Map';
-toggleButton.addEventListener('click', function() {
+const toggleButton_1 = document.getElementById('wms-button');
+toggleButton_1.addEventListener('click', function() {
   // Toggle the visibility of each layer
   map_kacheln_wms.setVisible(!map_kacheln_wms.getVisible());
 });
 
-// Füge den Button zum DOM hinzu
-document.body.appendChild(toggleButton);
->>>>>>> 459fe42793e7a3fadcbc299fbd615b193be0f5a0
+const toggleButton_2 = document.getElementById('airspace-button');
+toggleButton_2.addEventListener('click', function() {
+  // Toggle the visibility of each layer
+  map_airspaces_wms.setVisible(!map_airspaces_wms.getVisible());
+});
