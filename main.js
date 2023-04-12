@@ -53,6 +53,8 @@ const map = new Map({
   }),
 });
 
+<<<<<<< HEAD
+=======
 // Button zum Umschalten zwischen den Maps erstellen
 const toggleButton = document.createElement('button');
 toggleButton.innerHTML = 'Toggle Map';
@@ -63,3 +65,4 @@ toggleButton.addEventListener('click', function() {
 
 // Füge den Button zum DOM hinzu
 document.body.appendChild(toggleButton);
+>>>>>>> 459fe42793e7a3fadcbc299fbd615b193be0f5a0
