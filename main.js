@@ -13,7 +13,9 @@ const map_osm = new TileLayer({
 const map_kacheln_wms = new TileLayer({ 
   source: new TileWMS({
     url: 'http://localhost:8080/geoserver/wms',
-    params: {'LAYERS': 'GIS_Gleitschirm_LP:Kacheln_WGS84', 'TILED': true},
+    params: {
+    'LAYERS': 'GIS_Gleitschirm_LP:Kacheln_WGS84', 
+    'TILED': true},
     serverType: 'geoserver',
     transition: 0,
   }),
@@ -48,8 +50,6 @@ const map = new Map({
   }),
 });
 
-<<<<<<< HEAD
-=======
 // Button zum Umschalten zwischen den Maps erstellen
 const toggleButton_1 = document.getElementById('wms-button');
 toggleButton_1.addEventListener('click', function() {
