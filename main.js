@@ -13,7 +13,7 @@ const layers = [
   new TileLayer({
     source: new TileWMS({
       url: 'http://localhost:8080/geoserver/wms',
-      params: {'LAYERS': 'tiger:poi', 'TILED': true},
+      params: {'LAYERS': 'GS_LP:Kacheln_WGS84', 'TILED': true},
       serverType: 'geoserver',
       // Countries have transparency, so do not fade tiles:
       transition: 0,
