@@ -27,6 +27,7 @@ const map_airspaces_wms = new TileLayer({
     serverType: 'geoserver',
     transition: 0,
   }),
+  visible: false
 })
 
 // Set opacity of map_airspaces_wms layer to 0.5 (50% transparency)
@@ -48,8 +49,14 @@ const map = new Map({
 });
 
 // Button zum Umschalten zwischen den Maps erstellen
-const toggleButton = document.getElementById('toggle-button');
-toggleButton.addEventListener('click', function() {
+const toggleButton_1 = document.getElementById('wms-button');
+toggleButton_1.addEventListener('click', function() {
   // Toggle the visibility of each layer
   map_kacheln_wms.setVisible(!map_kacheln_wms.getVisible());
+});
+
+const toggleButton_2 = document.getElementById('airspace-button');
+toggleButton_2.addEventListener('click', function() {
+  // Toggle the visibility of each layer
+  map_airspaces_wms.setVisible(!map_airspaces_wms.getVisible());
 });
