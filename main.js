@@ -26,9 +26,21 @@ const map_kacheln_wms = new TileLayer({
   visible: false
 })
 
+const map_airspaces_wms = new TileLayer({ 
+  source: new TileWMS({
+    url: 'http://localhost:8080/geoserver/wms',
+    params: {'LAYERS': 'GIS_Gleitschirm_LP:Airspaces_WGS84', 'TILED': true},
+    serverType: 'geoserver',
+    transition: 0,
+  }),
+})
+
+// Set opacity of map_airspaces_wms layer to 0.5 (50% transparency)
+map_airspaces_wms.setOpacity(0.5);
+
 // Layer Anordung
 const layers = [
-  map_osm, map_kacheln_wms
+  map_osm, map_kacheln_wms, map_airspaces_wms
 ];
 
 // Map Darstlung
