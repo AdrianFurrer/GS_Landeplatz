@@ -11,14 +11,6 @@ import {bbox as bboxStrategy} from 'ol/loadingstrategy.js';
 import { format } from 'ol/coordinate';
 
 
-var layer_2 = new VectorLayer({
-  source: new VectorSource({
-    url: "http://localhost:8080/geoserver/GIS_Gleitschirm_LP/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=GIS_Gleitschirm_LP%3AKacheln_WGS84&maxFeatures=50&outputFormat=json",
-    format: new GeoJSON(),
-    attributions: "geoserver"
-  })
-})
-
 // Verschiedenen Maps
 const map_osm = new TileLayer({
   source: new OSM(),
@@ -31,6 +23,7 @@ const map_kacheln_wms = new TileLayer({
     serverType: 'geoserver',
     transition: 0,
   }),
+  visible: false
 })
 
 const map_airspaces_wms = new TileLayer({ 
@@ -60,3 +53,13 @@ const map = new Map({
   }),
 });
 
+// Button zum Umschalten zwischen den Maps erstellen
+const toggleButton = document.createElement('button');
+toggleButton.innerHTML = 'Toggle Map';
+toggleButton.addEventListener('click', function() {
+  // Toggle the visibility of each layer
+  map_kacheln_wms.setVisible(!map_kacheln_wms.getVisible());
+});
+
+// Füge den Button zum DOM hinzu
+document.body.appendChild(toggleButton);
