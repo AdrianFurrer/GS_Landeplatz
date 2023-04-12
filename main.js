@@ -19,7 +19,7 @@ const map_kacheln_wms = new TileLayer({
     serverType: 'geoserver',
     transition: 0,
   }),
-  visible: false
+  visible: true
 })
 
 const map_airspaces_wms = new TileLayer({ 
@@ -61,4 +61,17 @@ const toggleButton_2 = document.getElementById('airspace-button');
 toggleButton_2.addEventListener('click', function() {
   // Toggle the visibility of each layer
   map_airspaces_wms.setVisible(!map_airspaces_wms.getVisible());
+});
+
+map_kacheln_wms.on('click', function(evt) {
+  var pixel = evt.pixel;
+  var coordinate = evt.coordinate;
+  map.forEachLayerAtPixel(pixel, function(layer) {
+    if (layer === map_kacheln_wms) {
+      var features = map.getFeaturesAtPixel(pixel);
+      if (features.length > 0) {
+        console.log(features[0].get('dist_z_eov'));
+      }
+    }
+  });
 });
