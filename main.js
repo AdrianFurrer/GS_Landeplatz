@@ -42,12 +42,8 @@ const map = new Map({
 });
 
 // Button zum Umschalten zwischen den Maps erstellen
-const toggleButton = document.createElement('button');
-toggleButton.innerHTML = 'Toggle Map';
+const toggleButton = document.getElementById('toggle-button');
 toggleButton.addEventListener('click', function() {
   // Toggle the visibility of each layer
   map_kacheln_wms.setVisible(!map_kacheln_wms.getVisible());
 });
-
-// Füge den Button zum DOM hinzu
-document.body.appendChild(toggleButton);
