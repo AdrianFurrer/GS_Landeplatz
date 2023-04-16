@@ -93,3 +93,10 @@ var map = new ol.Map({
 	  zoom: 14
 	})
 });
+
+// Click Function --------------------------------------------------------------
+map.on('click', function(e) {
+	map.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
+	  console.log(feature.getProperties().id);
+	});
+  });
