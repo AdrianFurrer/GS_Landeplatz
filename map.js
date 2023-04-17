@@ -45,8 +45,8 @@ var sourcePath = new ol.source.Vector({
 // Style ----------------------------------------------------------------------------
 var red_stroke = new ol.style.Style({
 	stroke: new ol.style.Stroke({
-	  color: 'rgba(255, 0, 0, 0.5)', // Rot mit 50% Transparenz
-	  width: 2
+	  color: 'rgba(255, 255, 0)', // Rot mit 50% Transparenz
+	  width: 5
 	}),
 })
 
