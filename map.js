@@ -160,7 +160,59 @@ var osm = new ol.layer.Tile({
 	source: new ol.source.OSM()
 })
 
-
+// Wetter API ------------------------------------------------------------------
+proj4.defs("EPSG:2056","+proj=somerc +lat_0=46.9524055555556 +lon_0=7.43958333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs +type=crs");
+ol.proj.proj4.register(proj4);
+var windLayer = new ol.layer.Vector({
+	source: new ol.source.Vector({
+	  format: new ol.format.GeoJSON({
+		dataProjection: 'EPSG:2056',
+		featureProjection: 'EPSG:4326'
+	  }),
+	  url: 'https://data.geo.admin.ch/ch.meteoschweiz.messwerte-windgeschwindigkeit-kmh-10min/ch.meteoschweiz.messwerte-windgeschwindigkeit-kmh-10min_de.json'
+	}),
+	style: function(feature) {
+		var windSpeed = feature.get('value');
+		var color;
+		if (windSpeed < 10) {
+		  color = 'rgba(0, 255, 0)';
+		} else if (windSpeed < 20) {
+		  color = 'rgba(255, 255, 0)';
+		} else {
+		  color = 'rgba(255, 0, 0)';
+		}
+		return new ol.style.Style({
+		  image: new ol.style.Circle({
+			radius: 5,
+			fill: new ol.style.Fill({
+			  color: color
+			}),
+			stroke: new ol.style.Stroke({
+			  color: 'rgba(0, 0, 0, 0.9)',
+			  width: 2
+			})
+		  }),
+		  text: new ol.style.Text({
+			text: windSpeed.toString(),
+			font: '16px Roboto',
+			fill: new ol.style.Fill({
+			  color: '#000'
+			}),
+			offsetY: -20,
+			offsetX: 20,
+			backgroundFill: new ol.style.Fill({
+			  color: 'white',
+			}),
+			backgroundStroke: new ol.style.Stroke({
+				linecap:"round",
+				color: 'white',
+				width: 8
+			})
+		  })
+		});
+	  }
+	})
+  
 // Map -------------------------------------------------------------------------
 var map = new ol.Map({
 	target: 'map',
@@ -171,6 +223,7 @@ var map = new ol.Map({
 		vectorKacheln, 
 		vectorWMS_Airspace,
 		vectorPath,
+		windLayer,
 	],
 	view: new ol.View({
 		center: ol.proj.fromLonLat([7.81542463758229, 47.351794485583724]),
@@ -211,4 +264,10 @@ toggleButton_pixelfarbe.addEventListener('click', function () {
 	wmtsSwissimage.setVisible(false);
 	wmtsPixel_grau.setVisible(false);
 	wmtsPixel_farbe.setVisible(true);
+});
+
+const toggleButton_wetterstationen = document.getElementById('wetterstationen-button');
+toggleButton_wetterstationen.addEventListener('click', function () {
+	// Toggle the visibility of each layer
+	windLayer.setVisible(true);
 });
