@@ -8,6 +8,9 @@ var geoserverWFS_Path = 'Gleitschirm_LP:Jura_All_Path_klein'
 let id_kachel = 9999
 
 // Source -----------------------------------------------------------------------------
+
+
+
 var sourceKacheln = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
 	url: function(extent) {
@@ -72,13 +75,13 @@ var vectorKacheln = new ol.layer.Vector({
 	style: function(feature) {
 	  var norm_all = feature.get('norm_all');
 	  var color = '';
-	  if (norm_all <= 0.25) {
+	  if (norm_all <= 0.7) {
 		color = 'rgba(255, 0, 0, 0.5)'; // Red with 50% opacity
-	  } else if (norm_all > 0.25 && norm_all <= 0.5) {
+	  } else if (norm_all > 0.7 && norm_all <= 0.8) {
 		color = 'rgba(255, 165, 0, 0.5)'; // Orange with 50% opacity
-	  } else if (norm_all > 0.5 && norm_all <= 0.75) {
+	  } else if (norm_all > 0.8 && norm_all <= 0.9) {
 		color = 'rgba(255, 255, 0, 0.5)'; // Yellow with 50% opacity
-	  } else if (norm_all > 0.75 && norm_all <= 1) {
+	  } else if (norm_all > 0.9 && norm_all <= 1) {
 		color = 'rgba(0, 128, 0, 0.5)'; // Green with 50% opacity
 	  }
 	  return new ol.style.Style({
