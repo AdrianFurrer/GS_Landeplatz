@@ -11,8 +11,6 @@ let id_kachel = 9999
 
 // Source -----------------------------------------------------------------------------
 
-
-
 var sourceKacheln = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
 	url: function (extent) {
@@ -23,7 +21,8 @@ var sourceKacheln = new ol.source.Vector({
 	strategy: ol.loadingstrategy.bbox
 });
 
-var sourceAirspace = new ol.source.Vector({
+// Airspace
+var sourceAirspaceWFS = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
 	url: function (extent) {
 		return 'http://188.227.200.59:8080/geoserver/Gleitschirm_LP/ows?service=WFS&' +
@@ -33,6 +32,16 @@ var sourceAirspace = new ol.source.Vector({
 	strategy: ol.loadingstrategy.bbox
 });
 
+var sourceAirspaceWMS = new ol.source.TileWMS({
+	url: 'http://188.227.200.59:8080/geoserver/wms',
+	params: {
+	  'LAYERS': 'Gleitschirm_LP:Airspace', 
+	  'TILED': true,
+	  'STYLES': "Airspace",
+  },
+	serverType: 'geoserver',
+	transition: 0,
+  });
 
 var sourcePath = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
@@ -58,8 +67,12 @@ var vectorPath = new ol.layer.Vector({
 	style: red_stroke,
 });
 
-var vectorAirspace = new ol.layer.Vector({
-	source: sourceAirspace,
+var vectorWMS_Airspace = new ol.layer.Tile({
+    source: sourceAirspaceWMS
+})
+
+var vectorWFSAirspace = new ol.layer.Vector({
+	source: sourceAirspaceWFS,
 	style: new ol.style.Style({
 		stroke: new ol.style.Stroke({
 			color: 'rgba(255, 0, 0, 0.5)', // Rot mit 50% Transparenz
@@ -156,7 +169,7 @@ var map = new ol.Map({
 		wmtsPixel_grau, 
 		wmtsPixel_farbe,
 		vectorKacheln, 
-		vectorAirspace,
+		vectorWMS_Airspace,
 		vectorPath,
 	],
 	view: new ol.View({
