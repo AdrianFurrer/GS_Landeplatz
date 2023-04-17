@@ -4,6 +4,8 @@ var geoserverWFS_Jura_Norm_All = 'Gleitschirm_LP:Jura_Norm_All'
 var geoserverWFS_Jura_Norm_All_klein = 'Gleitschirm_LP:Jura_Norm_All_klein'
 var geoserverWFS_Airspace ='Gleitschirm_LP:Airspace'
 var swisstopoWMTSLayer = 'ch.swisstopo.swissimage'; // Swisstopo WMTS Layername
+var geoserverWFS_Path = 'Gleitschirm_LP:Jura_All_Path_klein'
+let id_kachel = 9999
 
 // Source -----------------------------------------------------------------------------
 var sourceKacheln = new ol.source.Vector({
@@ -26,7 +28,31 @@ var sourceAirspace = new ol.source.Vector({
 	strategy: ol.loadingstrategy.bbox
 });
 
+
+var sourcePath = new ol.source.Vector({
+	format: new ol.format.GeoJSON(),
+	url: function(extent) {
+		return 'http://188.227.200.59:8080/geoserver/Gleitschirm_LP/ows?service=WFS&' +
+		'version=1.1.0&cql_filter=id='+id_kachel+'&request=GetFeature&typename=' +geoserverWFS_Path+
+		'&outputFormat=application/json';
+	},
+	strategy: ol.loadingstrategy.bbox
+});
+
+// Style ----------------------------------------------------------------------------
+var red_stroke = new ol.style.Style({
+	stroke: new ol.style.Stroke({
+	  color: 'rgba(255, 0, 0, 0.5)', // Rot mit 50% Transparenz
+	  width: 2
+	}),
+})
+
 // Layer -----------------------------------------------------------------------------
+var vectorPath = new ol.layer.Vector({
+	source: sourcePath,
+	style: red_stroke,
+  });
+
 var vectorAirspace = new ol.layer.Vector({
 	source: sourceAirspace,
 	style: new ol.style.Style({
@@ -87,7 +113,7 @@ var osm = new ol.layer.Tile({
 // Map -------------------------------------------------------------------------
 var map = new ol.Map({
 	target: 'map',
-	layers: [wmtsLayer,vectorKacheln,vectorAirspace],
+	layers: [wmtsLayer,vectorKacheln,vectorAirspace,vectorPath],
 	view: new ol.View({
 	  center: ol.proj.fromLonLat([7.81542463758229,47.351794485583724]),
 	  zoom: 14
@@ -98,5 +124,7 @@ var map = new ol.Map({
 map.on('click', function(e) {
 	map.forEachFeatureAtPixel(e.pixel, function(feature, layer) {
 	  console.log(feature.getProperties().id);
+	  id_kachel = feature.getProperties().id;
+	  vectorPath.getSource().refresh();
 	});
   });
