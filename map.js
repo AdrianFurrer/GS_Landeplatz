@@ -1,3 +1,7 @@
+// URLs
+
+var geosWMS = 'http://188.227.200.59:8080/geoserver/wms'
+
 // OpenLayers TileMap
 
 var geoserverWFS_Jura_Norm_All = 'Gleitschirm_LP:Jura_Norm_All';
@@ -7,10 +11,12 @@ var swisstopoWMTSSwissimage = 'ch.swisstopo.swissimage'; // Swisstopo WMTS Layer
 var swisstopoWMTSpixel_grau = 'ch.swisstopo.pixelkarte-grau';
 var swisstopoWMTSpixel_farbe ='ch.swisstopo.pixelkarte-farbe';
 var geoserverWFS_Path = 'Gleitschirm_LP:Jura_All_Path_klein';
+var geoserverwfs_Haltestellen
 let id_kachel = 9999
 
 // Source -----------------------------------------------------------------------------
 
+// Tile Analysis
 var sourceKacheln = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
 	url: function (extent) {
@@ -22,6 +28,7 @@ var sourceKacheln = new ol.source.Vector({
 });
 
 // Airspace
+//WFS
 var sourceAirspaceWFS = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
 	url: function (extent) {
@@ -32,8 +39,9 @@ var sourceAirspaceWFS = new ol.source.Vector({
 	strategy: ol.loadingstrategy.bbox
 });
 
+//WMS
 var sourceAirspaceWMS = new ol.source.TileWMS({
-	url: 'http://188.227.200.59:8080/geoserver/wms',
+	url: geosWMS,
 	params: {
 	  'LAYERS': 'Gleitschirm_LP:Airspace', 
 	  'TILED': true,
@@ -43,6 +51,7 @@ var sourceAirspaceWMS = new ol.source.TileWMS({
 	transition: 0,
   });
 
+// Path from LP to OeV
 var sourcePath = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
 	url: function (extent) {
@@ -53,6 +62,18 @@ var sourcePath = new ol.source.Vector({
 	strategy: ol.loadingstrategy.bbox
 });
 
+// Railways
+var sourceRailwaysWMS = new ol.source.TileWMS({
+	url: geosWMS,
+	params: {
+		'LAYERS': 'Gleitschirm_LP:Bahnlinien', 
+		'TILED': true,
+		'STYLES': "Bahnlinien",
+	},
+	  serverType: 'geoserver',
+	  transition: 0,
+	});
+
 // Style ----------------------------------------------------------------------------
 var red_stroke = new ol.style.Style({
 	stroke: new ol.style.Stroke({
@@ -62,16 +83,22 @@ var red_stroke = new ol.style.Style({
 })
 
 // Layer -----------------------------------------------------------------------------
-var vectorPath = new ol.layer.Vector({
+
+var layerWMSRailways = new ol.layer.Tile({
+	visible: true,
+	source: sourceRailwaysWMS
+})
+
+var layerPath = new ol.layer.Vector({
 	source: sourcePath,
 	style: red_stroke,
 });
 
-var vectorWMS_Airspace = new ol.layer.Tile({
+var layerWMSAirspace = new ol.layer.Tile({
     source: sourceAirspaceWMS
 })
 
-var vectorWFSAirspace = new ol.layer.Vector({
+var layerWFSAirspace = new ol.layer.Vector({
 	source: sourceAirspaceWFS,
 	style: new ol.style.Style({
 		stroke: new ol.style.Stroke({
@@ -84,7 +111,7 @@ var vectorWFSAirspace = new ol.layer.Vector({
 	})
 });
 
-var vectorKacheln = new ol.layer.Vector({
+var layerKacheln = new ol.layer.Vector({
 	source: sourceKacheln,
 	minZoom: 13.5,
 	style: function (feature) {
@@ -171,6 +198,7 @@ var windLayer = new ol.layer.Vector({
 	  }),
 	  url: 'https://data.geo.admin.ch/ch.meteoschweiz.messwerte-windgeschwindigkeit-kmh-10min/ch.meteoschweiz.messwerte-windgeschwindigkeit-kmh-10min_de.json'
 	}),
+	// style
 	style: function(feature) {
 		var windSpeed = feature.get('value');
 		var color;
@@ -208,21 +236,25 @@ var windLayer = new ol.layer.Vector({
 				color: 'white',
 				width: 8
 			})
+			// ende Style
 		  })
 		});
 	  }
 	})
   
 // Map -------------------------------------------------------------------------
+// The layer order corresponds to the order of presentation.
 var map = new ol.Map({
 	target: 'map',
 	layers: [
 		wmtsSwissimage, 
 		wmtsPixel_grau, 
 		wmtsPixel_farbe,
-		vectorKacheln, 
-		vectorWMS_Airspace,
-		vectorPath,
+		
+		layerKacheln, 
+		layerWMSAirspace,
+		layerPath,
+		layerWMSRailways,
 		windLayer,
 	],
 	view: new ol.View({
