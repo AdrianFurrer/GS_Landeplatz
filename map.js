@@ -129,54 +129,41 @@ var pathstyle = new ol.style.Style({
 // 	}),
 //   });
 
-var pointstyle = function(feature, resolution) {
-	var verkehrsmittel_code = feature.get('verkehrsmittel_code');
-	var feature_type = feature.get('feature_type');
-	
-	if ((verkehrsmittel_code === 'A' || verkehrsmittel_code === 'C' || verkehrsmittel_code === 'D') && resolution < 10) {
-	  return new ol.style.Style({
-		image: new ol.style.Circle({
-		  radius: 5,
-		  fill: new ol.style.Fill({
-			color: 'rgba(0, 255, 0, 0.7)', // green with opacity 0.7
-		  }),
-		  stroke: new ol.style.Stroke({
-			color: 'rgba(255, 255, 255, 1)', // white with opacity 1
-			width: 2,
-		  }),
-		}),
-	  });
-	} else if (verkehrsmittel_code === 'B'&& resolution < 30) {
-	  return new ol.style.Style({
-		image: new ol.style.Circle({
-		  radius: 5,
-		  fill: new ol.style.Fill({
-			color: 'rgba(255, 0, 0, 0.7)', // red with opacity 0.7
-		  }),
-		  stroke: new ol.style.Stroke({
-			color: 'rgba(255, 255, 255, 1)', // white with opacity 1
-			width: 2,
-		  }),
-		}),
-	  });
-	} else if (verkehrsmittel_code === 'I' && resolution < 30) {
-	  return new ol.style.Style({
-		image: new ol.style.Circle({
-		  radius: 5,
-		  fill: new ol.style.Fill({
-			color: 'rgba(173, 216, 230, 0.7)', // light blue with opacity 0.7
-		  }),
-		  stroke: new ol.style.Stroke({
-			color: 'rgba(255, 255, 255, 1)', // white with opacity 1
-			width: 2,
-		  }),
-		}),
-	  });
-	} else {
-		return null;
-	}
-  };
-  
+var whitestroke = new ol.style.Stroke({
+	color: 'rgba(255, 255, 255, 1)', // white with opacity 1
+	width: 2,
+  });
+
+var greenpointstyle = new ol.style.Style({
+	image: new ol.style.Circle({
+	  radius: 5,
+	  fill: new ol.style.Fill({
+		color: 'rgba(0, 255, 0, 0.7)', // green with opacity 0.7
+	  }),
+	  stroke: whitestroke
+	}),
+  });
+
+var redpointstyle = new ol.style.Style({
+	image: new ol.style.Circle({
+	  radius: 5,
+	  fill: new ol.style.Fill({
+		color: 'rgba(255, 0, 0, 0.7)', // red with opacity 0.7
+	  }),
+	  stroke: whitestroke
+	}),
+  });
+
+  var bluepointstyle = new ol.style.Style({
+	image: new ol.style.Circle({
+	  radius: 5,
+	  fill: new ol.style.Fill({
+		color: 'rgba(173, 216, 230, 0.7)', // light blue with opacity 0.7
+	  }),
+	  stroke: whitestroke
+	}),
+  });
+
   
   
 
@@ -186,40 +173,23 @@ var pointstyle = function(feature, resolution) {
 // Layer -----------------------------------------------------------------------------
 
 
-// var select = new ol.interaction.Select({
-// 	style: pointstyle,
-// 	layers: [layerWFSOeVstops], // replace with your vector layer
-//   });
-  
-//   map.addInteraction(select);
-  
-//   var popup = new ol.Overlay({
-// 	element: document.getElementById('popup'),
-// 	positioning: 'bottom-center',
-// 	offset: [0, -10],
-//   });
-  
-//   map.addOverlay(popup);
-  
-//   map.on('click', function(evt) {
-// 	var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
-// 	  return feature;
-// 	});
-  
-// 	if (feature) {
-// 	  var name = feature.get('name'); // replace with the actual attribute name that contains the name
-// 	  var coordinate = evt.coordinate;
-// 	  popup.setPosition(coordinate);
-// 	  popup.getElement().innerHTML = name;
-// 	} else {
-// 	  popup.setPosition(undefined);
-// 	}
-//   });
+
   
 
 var layerWFSOeVstops = new ol.layer.Vector({
 	source: sourveOeVstopsWFS,
-	style: pointstyle,
+	style: function(feature, resolution) {
+		var verkehrsmittel_code = feature.get('verkehrsmittel_code');
+		if ((verkehrsmittel_code === 'A' || verkehrsmittel_code === 'C' || verkehrsmittel_code === 'D') && resolution < 10) {
+		  return greenpointstyle;
+		} else if (verkehrsmittel_code === 'I' && resolution < 30) {
+		  return bluepointstyle;
+		} else if (verkehrsmittel_code === 'B' && resolution < 30) {
+			return redpointstyle;
+		} else {
+			return null;
+		}
+	}
 })
 
 var layerWMSKacheln = new ol.layer.Tile({
@@ -427,6 +397,39 @@ map.on('click', function (e) {
 		layerPath.getSource().refresh();
 	});
 });
+
+
+// Interaktion
+
+var select = new ol.interaction.Select({
+	style: redpointstyle,
+	layers: [layerWFSOeVstops], // replace with your vector layer
+  });
+  
+  map.addInteraction(select);
+  
+  var popup = new ol.Overlay({
+	element: document.getElementById('popup'),
+	positioning: 'bottom-center',
+	offset: [0, -10],
+  });
+  
+  map.addOverlay(popup);
+  
+  map.on('click', function(evt) {
+	var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+	  return feature;
+	});
+  
+	if (feature) {
+	  var name = feature.get('name'); // replace with the actual attribute name that contains the name
+	  var coordinate = evt.coordinate;
+	  popup.setPosition(coordinate);
+	  popup.getElement().innerHTML = name;
+	} else {
+	  popup.setPosition(undefined);
+	}
+  });
 
 // Click Function WMS --------------------------------------------------------------
 
