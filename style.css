@@ -2,3 +2,46 @@
     height: 750px;
     width: 100%;
 }
+
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    font-size: 14px;
+    min-width: 150px;
+  }
+  
+  .ol-popup:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #cccccc;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+  }
+  
+  .ol-popup-closer {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333333;
+  }
+  
+  .ol-popup-closer:hover {
+    color: #000000;
+  }
+  
+  #popup-content {
+    margin-bottom: 5px;
+  }
+  
