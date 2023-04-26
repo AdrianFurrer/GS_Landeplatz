@@ -411,7 +411,7 @@ var select = new ol.interaction.Select({
   var popup = new ol.Overlay({
 	element: document.getElementById('popup'),
 	positioning: 'bottom-center',
-	offset: [0, -10],
+	offset: [0, -5],
   });
   
   map.addOverlay(popup);
