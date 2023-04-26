@@ -303,6 +303,7 @@ var osm = new ol.layer.Tile({
 // Wetter API ------------------------------------------------------------------
 proj4.defs("EPSG:2056","+proj=somerc +lat_0=46.9524055555556 +lon_0=7.43958333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs +type=crs");
 ol.proj.proj4.register(proj4);
+
 var windLayer = new ol.layer.Vector({
 	source: new ol.source.Vector({
 	  format: new ol.format.GeoJSON({
@@ -313,6 +314,7 @@ var windLayer = new ol.layer.Vector({
 	}),
 	// style
 	style: function(feature) {
+		var windDirection = feature.get('wind_direction_radian') || 0;
 		var windSpeed = feature.get('value');
 		var color;
 		if (windSpeed < 10) {
@@ -323,16 +325,14 @@ var windLayer = new ol.layer.Vector({
 		  color = 'rgba(255, 0, 0)';
 		}
 		return new ol.style.Style({
-		  image: new ol.style.Circle({
-			radius: 5,
-			fill: new ol.style.Fill({
-			  color: color
-			}),
-			stroke: new ol.style.Stroke({
-			  color: 'rgba(0, 0, 0, 0.9)',
-			  width: 2
-			})
-		  }),
+
+			image: new ol.style.Icon({
+    src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"><path d="M0 0 L 9 6 L 18 0 L 9 28 z" fill="' + color + '" /></svg>',
+    imgSize: [30, 30],
+    anchor: [0.5, 0.5],
+    rotateWithView: true,
+	rotation: windDirection,
+  }),
 		  text: new ol.style.Text({
 			text: windSpeed.toString(),
 			font: '16px Roboto',
@@ -340,7 +340,7 @@ var windLayer = new ol.layer.Vector({
 			  color: '#000'
 			}),
 			offsetY: -20,
-			offsetX: 20,
+			offsetX: 25,
 			backgroundFill: new ol.style.Fill({
 			  color: 'white',
 			}),
@@ -349,12 +349,16 @@ var windLayer = new ol.layer.Vector({
 				color: 'white',
 				width: 8
 			})
-			// ende Style
+			
 		  })
 		});
 	  }
+	  // Ende style
 	})
   
+
+  
+
 // Map -------------------------------------------------------------------------
 // Map -------------------------------------------------------------------------
 // Map -------------------------------------------------------------------------
@@ -386,6 +390,7 @@ var map = new ol.Map({
 		zoom: 14
 	})
 });
+
 
 
 
@@ -475,6 +480,7 @@ toggleButton_pixelgrau.addEventListener('click', function () {
 	wmtsSwissimage.setVisible(false);
 	wmtsPixel_grau.setVisible(true);
 	wmtsPixel_farbe.setVisible(false);
+	layerWMSRailways.setVisible(false);
 });
 
 const toggleButton_pixelfarbe = document.getElementById('pixelfarbe-button');
@@ -483,6 +489,7 @@ toggleButton_pixelfarbe.addEventListener('click', function () {
 	wmtsSwissimage.setVisible(false);
 	wmtsPixel_grau.setVisible(false);
 	wmtsPixel_farbe.setVisible(true);
+	layerWMSRailways.setVisible(false);
 });
 
 const toggleButton_wetterstationen = document.getElementById('wetterstationen-button');
