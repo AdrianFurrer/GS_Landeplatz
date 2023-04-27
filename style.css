@@ -12,7 +12,7 @@
     border-radius: 5px;
     border: 1px solid #cccccc;
     font-size: 14px;
-    min-width: 150px;
+    min-width: 400px;
     bottom: 100%; /* set bottom to the height of the popup */
     left: 50%; /* center horizontally */
     transform: translate(-50%, -10px); /* adjust vertical position */
