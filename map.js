@@ -1,7 +1,8 @@
 // URLs
 
-var geosWMS = 'http://188.227.200.59:8080/geoserver/wms'
-var geosWFS = 'http://188.227.200.59:8080/geoserver/Gleitschirm_LP/ows?service=WFS&'
+var ip_adresse = "188.227.201.121"
+var geosWMS = 'http://'+ ip_adresse +':8080/geoserver/wms'
+var geosWFS = 'http://'+ ip_adresse +':8080/geoserver/Gleitschirm_LP/ows?service=WFS&'
 
 // OpenLayers TileMap
 
