@@ -436,34 +436,6 @@ var select = new ol.interaction.Select({
 	}
   });
 
-// Click Function WMS --------------------------------------------------------------
-
-// map.on('click', function (e) {
-
-// 	const viewResolution = /** @type {number} */ (view.getResolution());
-//     // var viewResolution = map.getView().getResolution();
-//     var coordinate = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
-//     var url = sourceKachelnWMS.getFeatureInfoUrl(
-//         coordinate,
-//         viewResolution,
-//         'EPSG:4326',
-//         {'INFO_FORMAT': 'application/json'}
-//     );
-//     if (url) {
-//         fetch(url)
-//             .then(function (response) {
-//                 return response.json();
-//             })
-//             .then(function (json) {
-//                 console.log(json);
-//             });
-//     }
-// });
-
-
-
-
-
 
 // Buttons ---------------------------------------------------------------------
 const toggleButton_swissimage = document.getElementById('swissimage-button');
