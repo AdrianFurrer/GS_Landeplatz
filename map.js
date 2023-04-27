@@ -427,14 +427,25 @@ var select = new ol.interaction.Select({
 	});
   
 	if (feature) {
-	  var name = feature.get('name'); // replace with the actual attribute name that contains the name
+	  var name = feature.get('name');
+	  var description = feature.get('description');
+	  var content = ''; // initialize the content variable to an empty string
+	  if (name !== undefined && name !== null) { // check if 'name' attribute exists
+		content += '<h6>' + name + '</h6>'; // add the 'name' to the HTML content
+	  } else if (description !== undefined && description !== null) { // check if 'description' attribute exists
+		content += '<p>' + description + '</p>'; // add the 'description' to the HTML content
+	  } else {
+		popup.setPosition(undefined);
+		return; // exit the function if neither 'name' nor 'description' attributes exist
+	  }
 	  var coordinate = evt.coordinate;
 	  popup.setPosition(coordinate);
-	  popup.getElement().innerHTML = name;
+	  popup.getElement().innerHTML = content;
 	} else {
 	  popup.setPosition(undefined);
 	}
   });
+  
 
 
 // Buttons ---------------------------------------------------------------------
