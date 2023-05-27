@@ -71,7 +71,8 @@ var sourcePath = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
 	url: function (extent) {
 		return geosWFS +
-			'version=1.1.0&cql_filter=id=' + id_kachel + '&request=GetFeature&typename=' + geoserverWFS_Path +
+			'version=1.1.0&cql_filter=id=' + id_kachel +
+			'&request=GetFeature&typename=' + geoserverWFS_Path +
 			'&outputFormat=application/json';
 	},
 	strategy: ol.loadingstrategy.all
