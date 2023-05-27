@@ -16,7 +16,8 @@ Die Postgres Datenbank ist Lokal mit dem Geoserver verbunden. Sämtliche Geodate
 ## Upload/Anpassungen von Daten in PostGIS
 Die Daten wurden mithilfe von FME in die Datenbank übertragen. Die Geodaten sind im Projektionssystem [EPSG:4336](https://epsg.io/4326)abgelegt. Werden die Attribute eines Layers auf der Datenbank angepasst oder gelöscht, muss auf dem GeoServer der Button "Reload feature type" gedrückt werden. Ansonsten werden die Attribute nicht aktualisiert und die Attribute stehen einem beim WFS oder WMS nicht zur Verfügung.
 
-![[Reload-feature-type.JPG]]
+
+![Kein Bild Verfügbar](https://github.com/AdrianFurrer/GS_Landeplatz/blob/master/img/Reload-feature-type.JPG?raw=true)
 
 ## Bild der Applikation
-![[Übersicht-GS-App.JPG]]
+![Kein Bild Verfügbar](https://github.com/AdrianFurrer/GS_Landeplatz/blob/master/img/%C3%9Cbersicht-GS-App.JPG?raw=true)
