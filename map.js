@@ -16,13 +16,7 @@ var geoserverWFS_Path = 'Gleitschirm_LP:Jura_All_Path_klein';
 var geoserverWFS_Haltestellen = 'Gleitschirm_LP:Haltestellen'
 let id_kachel = 9999
 
-
-
 // Source -----------------------------------------------------------------------------
-// Source -----------------------------------------------------------------------------
-// Source -----------------------------------------------------------------------------
-// Source -----------------------------------------------------------------------------
-
 // Tile Analysis
 // WFS
 var sourceKachelnWFS = new ol.source.Vector({
@@ -112,23 +106,11 @@ var sourceRailwaysWMS = new ol.source.TileWMS({
 // Style ----------------------------------------------------------------------------
 var pathstyle = new ol.style.Style({
 	stroke: new ol.style.Stroke({
-		color: 'rgba(255, 255, 0)', // yellow
-		width: 2
+		color: 'rgba(0, 0, 0)', // yellow
+		width: 3
 	}),
 });
 
-// var pointstyle = new ol.style.Style({
-// 	image: new ol.style.Circle({
-// 	  radius: 5,
-// 	  fill: new ol.style.Fill({
-// 		color: 'rgba(255, 0, 0, 0.7)', // red with opacity 0.7
-// 	  }),
-// 	  stroke: new ol.style.Stroke({
-// 		color: 'rgba(255, 255, 255, 1)', // white with opacity 1
-// 		width: 2,
-// 	  }),
-// 	}),
-//   });
 
 var whitestroke = new ol.style.Stroke({
 	color: 'rgba(255, 255, 255, 1)', // white with opacity 1
@@ -165,18 +147,7 @@ var redpointstyle = new ol.style.Style({
 	}),
   });
 
-  
-  
-
 // Layer -----------------------------------------------------------------------------
-// Layer -----------------------------------------------------------------------------
-// Layer -----------------------------------------------------------------------------
-// Layer -----------------------------------------------------------------------------
-
-
-
-  
-
 var layerWFSOeVstops = new ol.layer.Vector({
 	source: sourveOeVstopsWFS,
 	style: function(feature, resolution) {
@@ -356,21 +327,9 @@ var windLayer = new ol.layer.Vector({
 	  }
 	  // Ende style
 	})
-  
 
-  
-
-// Map -------------------------------------------------------------------------
-// Map -------------------------------------------------------------------------
-// Map -------------------------------------------------------------------------
-// Map -------------------------------------------------------------------------
+	// Map -------------------------------------------------------------------------
 // The layer order corresponds to the order of presentation.
-
-// const view = new ol.View({
-// 	center: [0, 0],
-// 	zoom: 1,
-//   });
-
 var map = new ol.Map({
 	target: 'map',
 	layers: [
@@ -392,9 +351,6 @@ var map = new ol.Map({
 	})
 });
 
-
-
-
 // Click Function --------------------------------------------------------------
 map.on('click', function (e) {
 	map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
@@ -404,9 +360,7 @@ map.on('click', function (e) {
 	});
 });
 
-
 // Interaktion
-
 var select = new ol.interaction.Select({
 	style: redpointstyle,
 	layers: [layerWFSOeVstops], // replace with your vector layer
@@ -447,8 +401,6 @@ var select = new ol.interaction.Select({
 	}
   });
   
-
-
 // Buttons ---------------------------------------------------------------------
 const toggleButton_swissimage = document.getElementById('swissimage-button');
 toggleButton_swissimage.addEventListener('click', function () {
